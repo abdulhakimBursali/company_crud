@@ -3,13 +3,11 @@
 namespace App\Jobs;
 
 use App\Models\Companies;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Storage;
 
 class GetSource implements ShouldQueue
 {
@@ -17,6 +15,8 @@ class GetSource implements ShouldQueue
 
     protected $webAdress;
     protected $companyId;
+    protected $userID = "4d2a5373-06ca-4d3e-9195-64131eb60e00";
+    protected $apiKey = "756c8813-ac90-49d6-90f3-a720308824f6";
 
     /**
      * Create a new job instance.
@@ -34,36 +34,33 @@ class GetSource implements ShouldQueue
      * Execute the job.
      *
      * @return void
+     *
      */
     public function handle()
     {
-        // Original
-//        $company = Companies::find($this->companyId );
-//        $company->web_page_source_code = file_get_contents($this->webAdress);
-//        $company->save();
-
-
-
-
         $company = Companies::find($this->companyId );
-        $string = file_get_contents($this->webAdress);
-        $site = preg_replace('/\s\s+/', ' ', $string);
-
-
-        $company->web_page_source_code=$site;
-
-
-
-
+        $webPageSource = file_get_contents($this->webAdress);
+        $company->web_page_source_code = $webPageSource;
+        //
+        $data = array('html'=>$webPageSource);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, "https://hcti.io/v1/image");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+        curl_setopt($ch, CURLOPT_POST, 1);
+        // Retrieve your user_id and api_key from https://htmlcsstoimage.com/dashboard
+        curl_setopt($ch, CURLOPT_USERPWD, $this->userID . ":" . $this->apiKey);
+        $headers = array();
+        $headers[] = "Content-Type: application/x-www-form-urlencoded";
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $result = curl_exec($ch);
+        if (curl_errno($ch)) {
+            echo 'Error:' . curl_error($ch);
+        }
+        curl_close ($ch);
+        $res = json_decode($result,true);
+        $company->thumbnail = $res['url'];
+        //
         $company->save();
-
-
-
-
-
-
-
-
-//        Storage::put( 'file.txt',file_get_contents($this->webAdress));
     }
 }

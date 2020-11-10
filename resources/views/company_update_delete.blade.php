@@ -8,7 +8,7 @@
             <th scope="col">Şirket Adı</th>
             <th scope="col">Adresi</th>
             <th scope="col">Web Adresi</th>
-            {{--<th scope="col">Thumbnail</th>--}}
+            <th scope="col">Thumbnail</th>
             <th scope="col">Düzenle</th>
             <th scope="col">Sil</th>
         </tr>
@@ -27,7 +27,7 @@
                     @endif
                 </td>
                 <td>{{$company->internet_address}}</td>
-                {{--<td></td>--}}
+                <td>@php echo $company->thumbnail !== null ? "<img src='$company->thumbnail' style='width: 200px;'>" : "Eklenmemiş" @endphp</td>
                 <td><a href="{{route('company.updatePage', ['id' => $company->id])}}" class="btn btn-warning" >Güncelle</a></td>
                 <td><button class="btn btn-danger" onclick="deleteCompany({{$company->id}})">Sil</button> </td>
             </tr>
