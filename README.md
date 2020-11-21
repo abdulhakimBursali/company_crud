@@ -16,4 +16,4 @@ $ cd company_crud
 $ npm install 
 $ npm run serve
 ```
-![Vue SPA](https://github.com/[abdulhakimBursali]/[company_crud]/blob/[master]/company-crud.gifcompany-crud.gif?raw=true)
+![Vue SPA](https://github.com/abdulhakimBursali/company_crud/raw/master/company-crud.gif "Logo Title Text 1")
