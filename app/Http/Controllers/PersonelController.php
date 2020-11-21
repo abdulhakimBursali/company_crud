@@ -51,7 +51,7 @@ class PersonelController extends Controller
      */
     public function personelUpdateDelete():object {
         $personels = Personels::with('company')->get();
-        return view('personel_update_delete', compact('personels'));
+     return view('personel_update_delete', compact('personels'));
     }
 
     /* Personel Delete

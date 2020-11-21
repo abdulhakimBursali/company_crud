@@ -42,25 +42,26 @@ class GetSource implements ShouldQueue
         $webPageSource = file_get_contents($this->webAdress);
         $company->web_page_source_code = $webPageSource;
         //
-        $data = array('html'=>$webPageSource);
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, "https://hcti.io/v1/image");
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($ch, CURLOPT_POST, 1);
-        // Retrieve your user_id and api_key from https://htmlcsstoimage.com/dashboard
-        curl_setopt($ch, CURLOPT_USERPWD, $this->userID . ":" . $this->apiKey);
-        $headers = array();
-        $headers[] = "Content-Type: application/x-www-form-urlencoded";
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        $result = curl_exec($ch);
-        if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
-        }
-        curl_close ($ch);
-        $res = json_decode($result,true);
-        $company->thumbnail = $res['url'];
+//        $data = array('html'=>$webPageSource);
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_URL, "https://hcti.io/v1/image");
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+//        curl_setopt($ch, CURLOPT_POST, 1);
+//        // Retrieve your user_id and api_key from https://htmlcsstoimage.com/dashboard
+//        curl_setopt($ch, CURLOPT_USERPWD, $this->userID . ":" . $this->apiKey);
+//        $headers = array();
+//        $headers[] = "Content-Type: application/x-www-form-urlencoded";
+//        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//        $result = curl_exec($ch);
+//        if (curl_errno($ch)) {
+//            echo 'Error:' . curl_error($ch);
+//        }
+//        curl_close ($ch);
+//        $res = json_decode($result,true);
+//        $company->thumbnail = $res['url'];
         //
+        $company->thumbnail = "will create";
         $company->save();
     }
 }
